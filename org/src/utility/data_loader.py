@@ -1,5 +1,6 @@
 import csv, random, string
 import yaml, sys
+from definitions import CELL_TOWER_LOCATIONS, CUSTOMER_LIST
 assert sys.version_info >= (3, 5)
 
 
@@ -23,7 +24,7 @@ class Customer:
 
 def load_locations():
     locations_list = dict()
-    with open('../samples/TEST_DATA - Cell_Tower_Location.csv', mode='r') as csv_file:
+    with open(CELL_TOWER_LOCATIONS, mode='r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
         line_count = 0
         for row in csv_reader:
@@ -35,7 +36,7 @@ def load_locations():
 def load_customer():
     customer_list = dict()
     locations,location_count = load_locations()
-    with open('../samples/customer_list.csv', mode='r') as csv_file:
+    with open(CUSTOMER_LIST, mode='r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
         line_count = 0
         for row in csv_reader:
