@@ -1,5 +1,5 @@
 import sys,random
-from org.src.utility.utils import load_customer,load_yaml
+from org.src.utility.data_loader import load_customer,load_yaml
 from definitions import ROOT_DIR
 assert sys.version_info >= (3, 5)
 from datetime import datetime, timedelta

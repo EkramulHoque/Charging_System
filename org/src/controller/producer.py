@@ -1,17 +1,17 @@
 from kafka import KafkaProducer
 import time, threading
-from org.src.module.loader import generate
-from org.src.utility.utils import load_yaml
-from definitions import ROOT_DIR
+from org.src.module.simulator import generate
+from org.src.utility.data_loader import load_yaml
+from definitions import ROOT_DIR, SERVER, TOPIC, CONFIG_FILE
 
-file_path = ROOT_DIR+"\\config.yaml"
+file_path = ROOT_DIR+CONFIG_FILE
 data = load_yaml(file_path)
-rates = [1,10,100]# messages per second
+rates = data.get('RATE')# messages per second
 
 
 def send_at(rate):
-    producer = KafkaProducer(bootstrap_servers=['localhost:9092'])
-    topic = 'cdr-' + str(rate)
+    producer = KafkaProducer(bootstrap_servers=[SERVER])
+    topic = TOPIC + str(rate)
     interval = 1 / rate
     while True:
         msg = generate()
