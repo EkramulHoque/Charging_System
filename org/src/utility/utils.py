@@ -43,7 +43,7 @@ def load_customer():
             source = locations[sindex]
             dindex = random.randint(0,location_count-1)
             while sindex == dindex:
-                dindex = random.randint(0,location_count)
+                dindex = random.randint(0,location_count-1)
             destination = locations[dindex]
             alpa_id = ''.join(random.choice(string.ascii_uppercase) for _ in range(8))
             customer_list[line_count] = Customer(alpa_id + str("%02d" % (line_count,)), row["caller"], row["reciever"],

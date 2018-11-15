@@ -55,9 +55,4 @@ def generate():
                    + str(data[j].receiver) + ", " \
                    + str(random.randint(0,1)) + ", " \
                    + str(event_type) + '\n'
-    #print(msg)
     return msg
-
-
-if __name__ == "__main__":
-    generate()

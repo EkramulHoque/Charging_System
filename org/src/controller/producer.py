@@ -6,7 +6,7 @@ from definitions import ROOT_DIR
 
 file_path = ROOT_DIR+"\\config.yaml"
 data = load_yaml(file_path)
-rates = data.get('Rate')# messages per second
+rates = [1,10,100]# messages per second
 
 
 def send_at(rate):
