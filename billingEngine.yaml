@@ -1,0 +1,6 @@
+name: billingEngine
+channels:
+  - conda-forge
+dependencies:
+  - pyspark=2.4.0
+  - python=3.7.0
