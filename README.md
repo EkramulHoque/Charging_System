@@ -7,6 +7,12 @@ Charging system is a project with telecom billing components residing in line wi
 config.yaml: Parameter for the CDR generation\
 definitions.py: global variables used in the project
 
+#Add Path to your local environment
+In order to run scripts from the bash, add your path directory for python to locate your packages
+
+    Example:   export PYTHONPATH="E:/Fall-2018/CMPT-732 Programming for Big Data I/CMPT-732/Charging_system"
+
+
 #Simulator
 
 Directory: org\

@@ -87,6 +87,7 @@ def generate():
         for l in msg:
             final += msg1[l] + msg[l]
     return final
-#
+
 # if __name__ == "__main__":
-#     generate()
+#     result = generate()
+#     print(result)
