@@ -1,4 +1,3 @@
-import json
 import pprint,sys
 from pymongo import MongoClient
 from bson.objectid import ObjectId
