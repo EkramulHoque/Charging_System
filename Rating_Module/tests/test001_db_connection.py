@@ -1,8 +1,9 @@
-from Rating_Module import mlib_connector
+import pandas as pd
+from Rating_Module import mlib_connector, data_loader
 import pprint
 
 
-def test1():
+def t001_mlibconnector():
     my_obj = {
         "cname": "ramesh",
         "clast": "katebi"
@@ -13,6 +14,12 @@ def test1():
         pprint.pprint(i)
     print("hi")
 
+def t002_data_loader_customer():
+         df= data_loader.load_customer()
+         print(df)
+
+
 
 if __name__ == "__main__":
-    test1()
+    #t001_mlibconnector()
+    #t002_data_loader_customer()
