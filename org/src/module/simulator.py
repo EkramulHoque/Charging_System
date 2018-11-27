@@ -4,6 +4,7 @@ from definitions import ROOT_DIR
 assert sys.version_info >= (3, 5)
 from datetime import datetime, timedelta
 
+
 def month_converter(month):
     months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     return months.index(month) + 1
