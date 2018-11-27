@@ -63,3 +63,8 @@ class data_loader:
         """
         offers_df =self.__load_data(collection="customer_records", query=query, no_id=True)
         return offers_df
+
+if __name__ == "__main__":
+    dl = data_loader()
+    df = dl.load_customer()
+    print(df)
