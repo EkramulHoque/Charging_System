@@ -3,68 +3,63 @@ import pandas as pd
 from pymongo import MongoClient
 assert sys.version_info >= (3, 5)
 
-# retrive the database username and password
-dbname = "cdr"
-uname = 'test123'
-upass = 'test123'
-hostt="ds125623.mlab.com"
-portt="25623"
-mongo_url = ""
 
+class data_loader:
+    __dbname = ""
+    __uname = ""
+    __upass = ""
+    __hostt = ""
+    __portt = ""
+    __mongo_url = ""
 
-def _connect_mongo(host=hostt, port=portt, username=uname, password=upass, db=dbname):
-    """ A util for making a connection to mongo """
-    if username and password:
-        # set the mongoDB URL
-        mongo_url = 'mongodb://{0}:{1}@{2}:{3}/{4}'.format(username, password, host, port, db)
-        conn = MongoClient(mongo_url, connectTimeoutMS=30000)
-    else:
-        conn = MongoClient(host, port)
-    return conn[db]
+    def __init__(self, host='ds125623.mlab.com', port='25623', username='test123', password='test123', db='cdr'):
+        # retrive the database username and password
+        self.__dbname = db
+        self.__uname = username
+        self.__upass = password
+        self.__hostt = host
+        self.__portt = port
+        self.__mongo_url = 'mongodb://{0}:{1}@{2}:{3}/{4}'.format(username, password, host, port, db)
 
+    def __connect_mongo(self):
+        """ A util for making a connection to mongo """
+        if "" != self.__mongo_url:
+            conn = MongoClient(self.__mongo_url, connectTimeoutMS=30000)
+        else:
+            conn = MongoClient(self.__host, self.__port)
+        return conn[self.__dbname]
 
-def read_mongo(db, collection, query={}, host='localhost', port=27017, username=None, password=None, no_id=True):
-    """ Read from Mongo and Store into DataFrame """
+    def __load_data(self, collection, query={}, no_id=True):
+        """
+        Read from Mongo and return pandas DataFrame
+        :return: a pandas dataframe of customers information retrieved from Mlib
+        """
+        # Connect to MongoDB
+        db =self.__connect_mongo()
 
-    # Connect to MongoDB, using the default
-    db = _connect_mongo()
+        # Make a query to the specific DB and Collection
+        cursor = db[collection].find(query)
 
-    # Make a query to the specific DB and Collection
-    cursor = db[collection].find(query)
+        # Expand the cursor and construct the DataFrame
+        df = pd.DataFrame(list(cursor))
 
-    # Expand the cursor and construct the DataFrame
-    df = pd.DataFrame(list(cursor))
+        if no_id:
+            del df['_id']
+        return df
 
-    # Delete the _id
-    if no_id:
-        del df['_id']
+    def load_customer(self, query={}):
+        """
+        :param: a jason file containing conditions on the customers. for returning all customers no need to pass any parameters
+        :return: pandas dataframe of all customers
+        """
 
-    return df
+        customer_df =self.__load_data(collection="customer_records", query=query, no_id=True)
+        return customer_df
 
-def _load_data(collection, query={}, no_id=True):
-    """
-    Read from Mongo and return pandas DataFrame
-    :return: a pandas dataframe of customers information retrieved from Mlib
-    """
-    # Connect to MongoDB
-    db = _connect_mongo()
-
-    # Make a query to the specific DB and Collection
-    cursor = db[collection].find(query)
-
-    # Expand the cursor and construct the DataFrame
-    df = pd.DataFrame(list(cursor))
-
-    if no_id:
-        del df['_id']
-    return df
-
-
-def load_customer(query={}):
-    """
-    :param: a jason file containing conditions on the customers. for returning all customers no need to pass any parameters
-    :return: pandas dataframe of all customers
-    """
-    customer_df =_load_data(collection="customer_records",query=query,no_id=True)
-    return customer_df
-
+    def load_offers(self, query={}):
+        """
+        :param: a jason file containing conditions on the offers. for returning all customers no need to pass any parameters
+        :return: pandas dataframe of all offers
+        """
+        offers_df =self.__load_data(collection="customer_records", query=query, no_id=True)
+        return offers_df
