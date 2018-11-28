@@ -20,6 +20,7 @@ class data_loader:
         self.__hostt = host
         self.__portt = port
         self.__mongo_url = 'mongodb://{0}:{1}@{2}:{3}/{4}'.format(username, password, host, port, db)
+        print (self.__mongo_url)
 
     def __connect_mongo(self):
         """ A util for making a connection to mongo """
