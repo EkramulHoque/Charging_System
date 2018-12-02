@@ -1,5 +1,4 @@
 import sys,random
-from random import shuffle,seed
 from org.src.utility.data_loader import load_customer,load_yaml
 from definitions import ROOT_DIR, CONFIG_FILE
 assert sys.version_info >= (3, 5)
@@ -51,45 +50,17 @@ def generate():
            datetime_range(datetime(2018, start, 1, random.randint(0, 23)), datetime(2018, end, 31, random.randint(0, 23)),
                           timedelta(minutes=random.randint(1, 60)))]
     data = load_customer()
-    msg = dict()
-    msg1 = dict()
-    end_date_time = []
-    call_status = dict()
-    final = ""
+    msg = ''
     for i in range(1,length):
         for j in data:
-            start_date_time = random.randint(0,len(dts)-2)
-            end_date_time.append(start_date_time + 1)
-            call_status_temp = random.randint(0,1)
-            call_status[j] = call_status_temp
-            msg[j] =str(j+1) + ", " \
-                   + str(data[j].id) + ", " \
-                   + dts[start_date_time]+ ", " \
-                   + str(None) + ", " \
+            interval = random.randint(0,len(dts)-2)
+            msg += str(data[j].id) + ", " \
+                   + dts[interval]+ ", " \
+                   + dts[interval+1] + ", " \
                    + str(data[j].origin) + ", " \
                    + str(data[j].destination) + ", " \
                    + str(data[j].caller)+ ", " \
                    + str(data[j].receiver) + ", " \
-                   + str(call_status_temp) + ", " \
+                   + str(random.randint(0,1)) + ", " \
                    + str(event_type) + '\n'
-
-        for k in data:
-            msg1[k] = str(k+1) + ", " \
-                     +str(data[k].id) + ", " \
-                     + str(None) + ", " \
-                     + dts[end_date_time[k]] + ", " \
-                     + str(data[k].origin) + ", " \
-                     + str(data[k].destination) + ", " \
-                     + str(data[k].caller) + ", " \
-                     + str(data[k].receiver) + ", " \
-                     + str(call_status[k]) + ", " \
-                     + str(event_type) + '\n'
-        shuffle(msg)
-        shuffle(msg1)
-        for l in msg:
-            final += msg1[l] + msg[l]
-    return final
-
-# if __name__ == "__main__":
-#     result = generate()
-#     print(result)
+    return msg
