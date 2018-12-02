@@ -37,7 +37,7 @@ def generate():
     file_path = ROOT_DIR+CONFIG_FILE
     data = load_yaml(file_path)
     length = data.get('RECORDS')
-    event_type = check_event(data.get('EVENT_TYPE'))
+    event_type = data.get('EVENT_TYPE')
     date = data.get('MONTH')
     start = month_converter(date[0])
 
@@ -55,8 +55,8 @@ def generate():
         for j in data:
             interval = random.randint(0,len(dts)-2)
             msg += str(data[j].id) + ", " \
-                   + dts[interval]+ ", " \
-                   + dts[interval+1] + ", " \
+                   + str(dts[interval])+ ", " \
+                   + str(dts[interval+1]) + ", " \
                    + str(data[j].origin) + ", " \
                    + str(data[j].destination) + ", " \
                    + str(data[j].caller)+ ", " \
@@ -64,3 +64,4 @@ def generate():
                    + str(random.randint(0,1)) + ", " \
                    + str(event_type) + '\n'
     return msg
+
