@@ -14,6 +14,7 @@ class RatingProc(ABC):
     def rate(self):
         print("RatingProc: Rating")
         pass
+
     @abstractmethod
     def offer(self):
         print("RatingProc: Offer")

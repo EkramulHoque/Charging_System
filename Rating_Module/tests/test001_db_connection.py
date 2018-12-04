@@ -1,9 +1,9 @@
-import pandas as pd
-from Rating_Module import mlib_connector, data_loader
+from Rating_Module.data_loader import data_loader
+from Rating_Module import mlib_connector
 import pprint
 
 
-class Unit_test:
+class UnitTest:
 
     def t001_mlibconnector(self):
         my_obj = {
@@ -17,13 +17,14 @@ class Unit_test:
             pprint.pprint(i)
         print("hi")
 
-    def t002_data_loader_customer(self):
+    @staticmethod
+    def t002_data_loader_customer():
         dl = data_loader()
         df = dl.load_customer()
         print(df)
 
 
 if __name__ == "__main__":
-    ut = Unit_test()
+    ut = UnitTest()
     #ut.t001_mlibconnector()
     ut.t002_data_loader_customer()
