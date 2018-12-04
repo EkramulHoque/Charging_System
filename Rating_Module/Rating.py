@@ -7,11 +7,7 @@ class RatingProc(ABC):
     """
 
     @abstractmethod
-    def __aggregate(self):
-        pass
-
-    @abstractmethod
-    def rate(self):
+    def execute(self):
         print("RatingProc: Rating")
         pass
 

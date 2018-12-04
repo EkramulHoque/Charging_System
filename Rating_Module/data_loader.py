@@ -3,6 +3,7 @@ import configparser
 import pandas as pd
 from pymongo import MongoClient
 assert sys.version_info >= (3, 5)
+from pyspark.sql import SparkSession, functions, types, Window
 
 
 class data_loader:
@@ -12,6 +13,7 @@ class data_loader:
     __hostt = ""
     __portt = ""
     __mongo_url = ""
+
 
     def __init__(self, host='ds125623.mlab.com', port='25623', username='test123', password='test123', db='cdr'):
         # retrive the database username and password
@@ -67,8 +69,3 @@ class data_loader:
         """
         offers_df =self.__load_data(collection="customer_records", query=query, no_id=True)
         return offers_df
-
-if __name__ == "__main__":
-    dl = data_loader()
-    df = dl.load_customer()
-    print(df)
