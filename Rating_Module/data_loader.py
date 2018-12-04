@@ -1,4 +1,5 @@
 import sys
+import configparser
 import pandas as pd
 from pymongo import MongoClient
 assert sys.version_info >= (3, 5)
@@ -14,6 +15,8 @@ class data_loader:
 
     def __init__(self, host='ds125623.mlab.com', port='25623', username='test123', password='test123', db='cdr'):
         # retrive the database username and password
+        config = configparser.ConfigParser()
+        config.read('')
         self.__dbname = db
         self.__uname = username
         self.__upass = password
