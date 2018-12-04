@@ -1,5 +1,10 @@
 from Rating_Module.data_loader import data_loader
 from Rating_Module.Rating import RatingProc
+import sys
+assert sys.version_info >= (3, 5) # make sure we have Python 3.5+
+from pyspark.sql import SparkSession
+spark = SparkSession.builder.appName('Rating CDR').getOrCreate()
+assert spark.version >= '2.3' # make sure we have Spark 2.3+
 
 
 class RatingCdr(RatingProc):
@@ -14,19 +19,19 @@ class RatingCdr(RatingProc):
         self.__cdr_df = Cdr
         dl = data_loader()
         self.__customers = dl.load_customer()
+        self.__offers = dl.load_offers()
 
-
-    def __aggregate(self):
-        print('rating cdr: aggregate')
-
-    def rate(self):
+    def execute(self, med_df):
         """
         In this method all rates will be calculated
         :return: return a dataframe of ratings
         """
-        self.__aggregate()
-        print('RatingCdr')
-        return self.cdr_df
+        med_df = med_df.withColumn('duration', med_df['dateTimeDisconnect']-med_df['dateTimeConnect'])
+        med_df = med_df.join(self.__customers, med_df['customerId'] == self.__customers['customerId'])
+        # med_df = med_df.drop(med_df['name']).drop(med_df['lastname'])
+        med_df = med_df.join(self.__offers, med_df['offerId'] == self.__offers['offerId'])
+        med_df = med_df.withColumn('bill', med_df['rate']*med_df['duration'])
+        return med_df
 
     def offer(self):
         """
