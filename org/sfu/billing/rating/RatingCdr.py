@@ -1,10 +1,10 @@
+import sys
 from org.sfu.billing.utils.dataLayer import dataLoader
 from org.sfu.billing.rating.Rating import Rating
-import sys
-assert sys.version_info >= (3, 5) # make sure we have Python 3.5+
-from pyspark.sql import SparkSession
-spark = SparkSession.builder.appName('Rating CDR').getOrCreate()
-assert spark.version >= '2.3' # make sure we have Spark 2.3+
+from pyspark.sql import  SQLContext, functions as F
+from pyspark.sql.functions import udf
+from pyspark.sql.types import IntegerType, DoubleType
+from datetime import datetime
 
 
 class RatingCdr(Rating):
@@ -16,11 +16,16 @@ class RatingCdr(Rating):
         This class is a constructor for the
         :param Cdr: the
         """
+        try:
+            dl = dataLoader()
+            self.__customers = dl.loadCustomers()
+            self.__offers = dl.loadOffers()
+            self.__medi_df = dl.loadCDR()
+        except:
+            print("Unexpected error:", sys.exc_info()[0])
+            raise Exception("This is a Spark reading from MongoDb Exception ")
 
-        dl = dataLoader()
-        self.__customers = dl.loadCustomers()
-        self.__offers = dl.load_offers()
-        self.__medi_df = dl.loadCDR()
+
 
     def execute(self, med_df):
         """
@@ -29,14 +34,16 @@ class RatingCdr(Rating):
         :return: a dataframe of the customers including the rating as well
         """
         med_df =self.__medi_df
-        med_df.printSchema()
-        """
-        med_df = med_df.withColumn('duration', med_df['dateTimeDisconnect']-med_df['dateTimeConnect'])
-        med_df = med_df.join(self.__customers, med_df['customerId'] == self.__customers['customerId'])
+        timeFormat = "%Y-%m-%d %H:%M:%S"
+        timeDiff = (F.unix_timestamp('dateTimeDisconnect', format=timeFormat)- F.unix_timestamp('dateTimeConnect', format=timeFormat))
+        med_df = med_df.withColumn("Duration", timeDiff)
+
+        med_df = med_df.join(self.__customers, med_df['callingPartyNumber'] == self.__customers['numbers'])
         # med_df = med_df.drop(med_df['name']).drop(med_df['lastname'])
         med_df = med_df.join(self.__offers, med_df['offerId'] == self.__offers['offerId'])
+
         med_df = med_df.withColumn('bill', med_df['rate']*med_df['duration'])
-        """
+
         return med_df
 
     def offer(self):
@@ -52,5 +59,9 @@ class RatingCdr(Rating):
 
 if __name__== "__main__":
     rcdr = RatingCdr()
-    print(rcdr.show(10))
+    md = None
+    md = rcdr.execute(md)
+    print(md.show(10))
+    print("hello")
+    #print(rcdr.show(10))
 
