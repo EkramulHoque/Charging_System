@@ -27,8 +27,7 @@ class dataLoader:
 
     # Here will be the instance stored.
     __instance = None
-    __customers = None
-    __offers = None
+
 
     def loadCustomers(self):
         """
@@ -83,7 +82,7 @@ class dataLoader:
         else:
             raise Exception("This class is a singleton Exception")
 
-
+"""
 if __name__== "__main__":
     dl=dataLoader()
     dl2=dataLoader()
@@ -92,3 +91,5 @@ if __name__== "__main__":
     cdr=dl2.loadCDR()
 
     print(cdr.show(10))
+    print(customers.show(10))
+"""
