@@ -1,10 +1,7 @@
 import sys
 from org.sfu.billing.utils.dataLayer import dataLoader
 from org.sfu.billing.rating.Rating import Rating
-from pyspark.sql import  SQLContext, functions as F
-from pyspark.sql.functions import udf
-from pyspark.sql.types import IntegerType, DoubleType
-from datetime import datetime
+from pyspark.sql import  functions as F
 
 
 class RatingCdr(Rating):
@@ -56,7 +53,7 @@ class RatingCdr(Rating):
         return self.offer_df
 
 
-
+"""
 if __name__== "__main__":
     rcdr = RatingCdr()
     md = None
@@ -65,3 +62,4 @@ if __name__== "__main__":
     print("hello")
     #print(rcdr.show(10))
 
+"""
