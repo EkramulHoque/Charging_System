@@ -23,16 +23,7 @@ def datetime_range(start, end, delta):
         yield current
         current += delta
 
-#checks the type of event mentioned in config yaml
-def check_event(event):
-    event_type = 0
-    if event == 'Data':
-        event_type = 1
-    else:
-        event_type = 0
-    return event_type
-
-#1. load configurations from config.yaml
+#1. load configurations from config.ini
 #2. Get the size of records i.e "length",event type ,month(mapped to index)
 #3. Create a list of datetime values
 #4. load customer list created from in data_loader
@@ -60,16 +51,24 @@ def generate():
     for i in range(1,length):
         for j in data:
             interval = random.randint(0,len(dts)-2)
-            msg += str(data[j].id) + ", " \
-                   + str(dts[interval])+ ", " \
-                   + str(dts[interval+1]) + ", " \
+            # msg += str(data[j].id) + ", " \
+            #        + str(dts[interval])+ ", " \
+            #        + str(dts[interval+1]) + ", " \
+            #        + str(data[j].origin) + ", " \
+            #        + str(data[j].destination) + ", " \
+            #        + str(data[j].caller)+ ", " \
+            #        + str(data[j].receiver) + ", " \
+            #        + str(random.randint(0,1)) + ", " \
+            #        + str(event_type) + '\n'
+            msg += str(dts[interval]) + ", " \
+                   + str(dts[interval + 1]) + ", " \
                    + str(data[j].origin) + ", " \
                    + str(data[j].destination) + ", " \
-                   + str(data[j].caller)+ ", " \
+                   + str(data[j].caller) + ", " \
                    + str(data[j].receiver) + ", " \
-                   + str(random.randint(0,1)) + ", " \
+                   + str(random.randint(0, 1)) + ", " \
                    + str(event_type) + '\n'
     return msg
 
-if __name__ == "__main__":
-    print(generate())
+# if __name__ == "__main__":
+#     print(generate())

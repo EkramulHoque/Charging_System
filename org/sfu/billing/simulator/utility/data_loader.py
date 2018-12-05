@@ -13,8 +13,7 @@ class Customer:
     'Common base class for all customer'
     customer_count = 0
 
-    def __init__(self, id, caller, receiver, origin, destination):
-        self.id = id
+    def __init__(self, caller, receiver, origin, destination):
         self.caller = caller
         self.receiver = receiver
         self.origin = origin
@@ -25,7 +24,7 @@ class Customer:
         print("Total Customer" + str(Customer.customer_count))
 
     def displayCustomer(self):
-        print("ID : " + str(self.id) + " Phone: " + str(self.caller))
+        print(" Phone: " + str(self.caller))
 
 #loads cell tower locations from csv file; returns a list of latitude and longitude
 def load_locations():
@@ -65,9 +64,11 @@ def load_customer():
             source = locations[sindex]
             dindex = random.randint(0,location_count-1)
             destination = locations[dindex]
-            alpa_id = ''.join(random.choice(string.ascii_uppercase) for _ in range(8))
-            customer_list[line_count] = Customer(alpa_id + str("%02d" % (line_count,)), row["caller"], row["reciever"],
-                                                 source,destination)
+            # alpa_id = ''.join(random.choice(string.ascii_uppercase) for _ in range(8))
+            # customer_list[line_count] = Customer(alpa_id + str("%02d" % (line_count,)), row["caller"], row["reciever"],
+            #                                      source,destination)
+            customer_list[line_count] = Customer(row["caller"], row["reciever"],
+                                                 source, destination)
             line_count += 1
     return customer_list
 
