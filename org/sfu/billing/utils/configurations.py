@@ -8,14 +8,12 @@ class SparkConfig:
     @staticmethod
     def get_spark():
 
-        spark = SparkSession.builder.appName('Billing_Engine_Listener') \
+        spark = SparkSession.builder.appName('Billing_Engine_Listener')\
                             .config("spark.jars.packages",SparkConfig.properties["SPARK"]["DEPENDENCIES"]) \
                             .config('spark.mongodb.input.uri', SparkConfig.properties["DATABASE"]["DB_INPUT_URI"]) \
                             .config('spark.mongodb.output.uri', SparkConfig.properties["DATABASE"]["DB_OUTPUT_URI"]) \
                             .getOrCreate()
-
         spark.sparkContext.setLogLevel('WARN')
-
         return spark
 
     @staticmethod
@@ -38,10 +36,5 @@ class SparkConfig:
     def stopStreaming(streamingQuery):
         streamingQuery.awaitTermination(SparkConfig.properties.getint("KAFKA","STREAMING_TTL"))
     
-#TODO: This method needs to be moved to data layer
-def save_batch(df, epoch_id):
-        df.write.format("com.mongodb.spark.sql.DefaultSource").mode("append") \
-            .option("database","billing") \
-            .option("collection", "custEventSource") \
-            .save()
-        pass
+
+
