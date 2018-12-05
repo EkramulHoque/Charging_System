@@ -84,3 +84,11 @@ class dataLoader:
             raise Exception("This class is a singleton Exception")
 
 
+if __name__== "__main__":
+    dl=dataLoader()
+    dl2=dataLoader()
+    customers = dl.loadCustomers()
+    offers= dl.loadOffers()
+    cdr=dl2.loadCDR()
+
+    print(cdr.show(10))

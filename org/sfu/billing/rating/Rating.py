@@ -7,7 +7,7 @@ class Rating(ABC):
     """
 
     @abstractmethod
-    def execute(self):
+    def execute(self, med_df):
         print("RatingProc: Rating")
         pass
 

@@ -1,5 +1,5 @@
 from org.sfu.billing.utils.dataLayer import dataLoader
-from org.sfu.billing.rating import Rating
+from org.sfu.billing.rating.Rating import Rating
 import sys
 assert sys.version_info >= (3, 5) # make sure we have Python 3.5+
 from pyspark.sql import SparkSession
@@ -11,26 +11,32 @@ class RatingCdr(Rating):
     """
     CDR class for Rating
     """
-    def __init__(self, Cdr):
+    def __init__(self):
         """
         This class is a constructor for the
         :param Cdr: the
         """
-        self.__cdr_df = Cdr
+
         dl = dataLoader()
         self.__customers = dl.loadCustomers()
         self.__offers = dl.load_offers()
+        self.__medi_df = dl.loadCDR()
 
     def execute(self, med_df):
         """
         In this method all rates will be calculated
-        :return: return a dataframe of ratings
+        :param med_df:
+        :return: a dataframe of the customers including the rating as well
+        """
+        med_df =self.__medi_df
+        med_df.printSchema()
         """
         med_df = med_df.withColumn('duration', med_df['dateTimeDisconnect']-med_df['dateTimeConnect'])
         med_df = med_df.join(self.__customers, med_df['customerId'] == self.__customers['customerId'])
         # med_df = med_df.drop(med_df['name']).drop(med_df['lastname'])
         med_df = med_df.join(self.__offers, med_df['offerId'] == self.__offers['offerId'])
         med_df = med_df.withColumn('bill', med_df['rate']*med_df['duration'])
+        """
         return med_df
 
     def offer(self):
@@ -43,4 +49,8 @@ class RatingCdr(Rating):
         return self.offer_df
 
 
+
+if __name__== "__main__":
+    rcdr = RatingCdr()
+    print(rcdr.show(10))
 
