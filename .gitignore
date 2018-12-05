@@ -2,3 +2,16 @@
 .idea/*
 _pycache/
 _pycache/*
+org/sfu/billing/simulator/module/__pycache__
+org/sfu/billing/simulator/module/__pycache__/*
+org/sfu/billing/simulator/utility/__pycache__
+org/sfu/billing/simulator/utility/__pycache__/*
+org/sfu/billing/utils/__pycache__/*
+org/sfu/billing/utils/__pycache__/
+
+
+
+
+
+
+
