@@ -1,6 +1,7 @@
-from org.sfu.billing.mediation.mediationcdr import MediationCdr
+from org.sfu.billing.mediation.MediationCdr import MediationCdr
 from pyspark.sql import functions
 from pyspark.sql.functions import split, to_timestamp, trim
+from org.sfu.billing.rating.RatingCdr import RatingCdr
 
 class CallDetailRecord(object):
     """Domain class for device type Telco. This class will hold information of how to transform into structured dataframe
@@ -40,6 +41,16 @@ class CallDetailRecord(object):
     # Input: Normalized dataframe coming from mediation pipeline
     # Output: Dataframes after rating applied based on offers
     def invoke_rating(self, med_df):
-        pass
+        rateCdr= RatingCdr()
+        final_df= rateCdr.execute(med_df)
+        return final_df
 
 
+
+if __name__== "__main__":
+    testObj = CallDetailRecord()
+    md = None
+    md = testObj.invoke_rating(md)
+    print(md.show(10))
+    print("hello")
+    #print(rcdr.show(10))
