@@ -31,9 +31,11 @@ class dataLoader:
     __offers = None
 
     def loadCustomers(self):
-        """ Static access method. """
+        """
+
+        :return: dataframe of customer reading from mongoDB
+        """
         try:
-            print(self.__customers.show(10))
             return self.__customers
         except:
             print("Unexpected error:", sys.exc_info()[0])
@@ -41,10 +43,23 @@ class dataLoader:
 
 
     def loadOffers(self):
-        """ Static access method. """
+        """
+
+        :return: dataframe of Offers from mongodb
+        """
         try:
-            print(self.__offers.show(10))
             return self.__offers
+        except:
+            print("Unexpected error:", sys.exc_info()[0])
+            raise
+
+    def loadCDR(self):
+        """
+         method to return the cdr data from the database
+        :return: CDR dataframe from mongodb
+        """
+        try:
+            return self.__cdrs
         except:
             print("Unexpected error:", sys.exc_info()[0])
             raise
@@ -58,10 +73,10 @@ class dataLoader:
                 self.__customers = spark.read.format("com.mongodb.spark.sql.DefaultSource") \
                     .option("collection", "customers")\
                     .load()
-                self.__customers.printSchema()
                 self.__offers = spark.read.format("com.mongodb.spark.sql.DefaultSource")\
                     .option("collection","offers").load()
-                self.__instance = True
+                self.__cdrs = spark.read.format("com.mongodb.spark.sql.DefaultSource")\
+                    .option("collection","custEventSource").load()
             except:
                 print("Unexpected error:", sys.exc_info()[0])
                 raise Exception("This is a Spark reading from MongoDb Exception ")
@@ -69,7 +84,3 @@ class dataLoader:
             raise Exception("This class is a singleton Exception")
 
 
-if __name__== "__main__":
-    dl=dataLoader()
-    customers = dl.loadCustomers()
-    print(customers.show(10))
