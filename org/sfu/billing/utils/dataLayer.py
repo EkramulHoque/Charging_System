@@ -63,6 +63,12 @@ class dataLoader:
             print("Unexpected error:", sys.exc_info()[0])
             raise
 
+    def save_batch(df, epoch_id):
+        df.write.format("com.mongodb.spark.sql.DefaultSource").mode("append") \
+            .option("database", "billing") \
+            .option("collection", "custEventSource") \
+            .save()
+        pass
 
     def __init__(self):
         """ Virtually private constructor. """
@@ -82,7 +88,7 @@ class dataLoader:
         else:
             raise Exception("This class is a singleton Exception")
 
-"""
+
 if __name__== "__main__":
     dl=dataLoader()
     dl2=dataLoader()
@@ -92,4 +98,3 @@ if __name__== "__main__":
 
     print(cdr.show(10))
     print(customers.show(10))
-"""
