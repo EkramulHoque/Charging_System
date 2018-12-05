@@ -13,18 +13,19 @@ class CallDetailRecord(object):
         cdr_df = raw_cdr.select(raw_cdr['value'].cast('string'))
         events = functions.split(cdr_df['value'], ',')
 
-        cdr_df = cdr_df.withColumn('customerId', trim(events.getItem(0))) \
-                       .withColumn('dateTimeConnect', to_timestamp(trim(events.getItem(1)),format='yyyyMMdd HHmmss')) \
-                       .withColumn('dateTimeDisconnect',to_timestamp(trim(events.getItem(2)),format='yyyyMMdd HHmmss')) \
-                       .withColumn('origNodeId',trim(events.getItem(3))) \
-                       .withColumn('destNodeId',trim(events.getItem(4))) \
-                       .withColumn('callingPartyNumber',trim(events.getItem(5))) \
-                       .withColumn('originalCalledPartyNumber',trim(events.getItem(6))) \
-                       .withColumn('callStatus',trim(events.getItem(7)).cast('int')) \
-                       .withColumn('eventType',trim(events.getItem(8)))
+        offset = 0
+        # cdr_df = cdr_df.withColumn('customerId', trim(events.getItem(offset))) \
+        cdr_df = cdr_df.withColumn('dateTimeConnect', to_timestamp(trim(events.getItem(offset)), format='yyyyMMdd HHmmss')) \
+            .withColumn('dateTimeDisconnect', to_timestamp(trim(events.getItem(offset + 1)), format='yyyyMMdd HHmmss')) \
+            .withColumn('origNodeId', trim(events.getItem(offset + 2))) \
+            .withColumn('destNodeId', trim(events.getItem(offset + 3))) \
+            .withColumn('callingPartyNumber', trim(events.getItem(offset + 4))) \
+            .withColumn('originalCalledPartyNumber', trim(events.getItem(offset + 5))) \
+            .withColumn('callStatus', trim(events.getItem(offset + 6)).cast('int')) \
+            .withColumn('eventType', trim(events.getItem(offset + 7)))
 
         cdr_df = cdr_df.drop(cdr_df['value'])
-           
+
         return cdr_df
 
     # Method involves in deciding pipeline cdr`s should go through in mediation layer
