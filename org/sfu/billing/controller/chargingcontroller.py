@@ -1,6 +1,5 @@
 from org.sfu.billing.utils.configurations import SparkConfig
-from org.sfu.billing.utils import configurations
-from org.sfu.billing import *
+from org.sfu.billing.utils.dataLayer import  dataLoader
 from org.sfu.billing.devices.cdr import CallDetailRecord
 
 from pyspark.sql import functions
@@ -38,14 +37,16 @@ class Controller:
     # 5.Invoke Rating process
     # 6.Check data in hdfs 
     # 7.Persist data on configured database
+
     def process(self):
         events = self.stream_rawCdr()
         cdr = self.device_type(events)
         mapped_df = cdr.map(events)
+        dl = dataLoader()
         normalized_frame = cdr.invoke_mediation(mapped_df)
-        #rated_frame = cdr.invoke_rating(normalized_frame)
-        #stream = rated_frame.writeStream.foreachBatch(configurations.save_batch).start()
-        stream = normalized_frame.writeStream.foreachBatch(configurations.save_batch).start()
+        rated_frame = cdr.invoke_rating(normalized_frame)
+        stream = rated_frame.writeStream.foreachBatch(dl.save_batch).start()
+        #stream = normalized_frame.writeStream.foreachBatch(configurations.save_batch).start()
         #stream = normalized_frame.writeStream.outputMode("append").format("console").start()
         self.spark_config.stopStreaming(stream)
         pass    
