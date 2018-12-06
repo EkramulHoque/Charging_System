@@ -63,7 +63,7 @@ class dataLoader:
             print("Unexpected error:", sys.exc_info()[0])
             raise
 
-    def save_batch(df, epoch_id):
+    def save_batch(self, df, epoch_id):
         df.write.format("com.mongodb.spark.sql.DefaultSource").mode("append") \
             .option("database", "billing") \
             .option("collection", "custEventSource") \
@@ -78,17 +78,24 @@ class dataLoader:
                 self.__customers = spark.read.format("com.mongodb.spark.sql.DefaultSource") \
                     .option("collection", "customers")\
                     .load()
+                self.__customers = self.__customers.drop(self.__customers["_id"])
+
                 self.__offers = spark.read.format("com.mongodb.spark.sql.DefaultSource")\
                     .option("collection","offers").load()
+                self.__offers = self.__offers.drop(self.__offers["_id"])
+                # to check the bahaviour  without streaming comment the following block out
+                """
                 self.__cdrs = spark.read.format("com.mongodb.spark.sql.DefaultSource")\
                     .option("collection","custEventSource").load()
+                self.__cdrs = self.__cdrs.drop(self.__cdrs["_id"])
+                """
             except:
                 print("Unexpected error:", sys.exc_info()[0])
                 raise Exception("This is a Spark reading from MongoDb Exception ")
         else:
             raise Exception("This class is a singleton Exception")
 
-
+"""
 if __name__== "__main__":
     dl=dataLoader()
     dl2=dataLoader()
@@ -98,3 +105,4 @@ if __name__== "__main__":
 
     print(cdr.show(10))
     print(customers.show(10))
+"""
