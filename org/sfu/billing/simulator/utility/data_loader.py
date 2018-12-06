@@ -72,6 +72,6 @@ def load_customer():
             line_count += 1
     return customer_list
 
-
+#
 # if __name__ == "__main__":
 #     print(load_customer())
