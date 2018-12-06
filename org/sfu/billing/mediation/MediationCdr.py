@@ -1,4 +1,4 @@
-from org.sfu.billing.mediation.mediationprocess import MediationProcess
+from org.sfu.billing.mediation.MediationProcess import MediationProcess
 
 class MediationCdr(MediationProcess):
     """Implementation class for MediationProcess for cdr"""

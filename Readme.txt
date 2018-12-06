@@ -20,4 +20,4 @@ bin\windows\kafka-server-start.bat config\server.properties
 bin\windows\kafka-console-producer.bat --broker-list localhost:9092 --topic cdr-10
 
 4. Start consumer:
-bin\windows\kafka-console-consumer.bat --bootstrap-server 142.58.215.106:9092 --topic cdr-10 --from-beginning
+bin\windows\kafka-console-consumer.bat --bootstrap-server 207.23.221.244:9092 --topic cdr-10 --from-beginning
