@@ -41,12 +41,12 @@ class CallDetailRecord(object):
     # Input: Normalized dataframe coming from mediation pipeline
     # Output: Dataframes after rating applied based on offers
     def invoke_rating(self, med_df):
-        rateCdr= RatingCdr()
-        final_df= rateCdr.execute(med_df)
+        rateCdr = RatingCdr()
+        final_df = rateCdr.execute(med_df)
         return final_df
 
 
-
+"""
 if __name__== "__main__":
     testObj = CallDetailRecord()
     md = None
@@ -54,3 +54,4 @@ if __name__== "__main__":
     print(md.show(10))
     print("hello")
     #print(rcdr.show(10))
+"""
