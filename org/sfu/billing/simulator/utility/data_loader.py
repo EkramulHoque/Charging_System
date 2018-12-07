@@ -8,7 +8,7 @@ def load_properties():
     config_file = config_dir + os.sep + config_fileName
     return config_file,config_dir
 #Creates a customer instance with a constructor;
-#Parameters: ID(alpha numeric), customer's phone number, receiver's phone number, location of the caller, location of the receiver
+#Parameters: customer's phone number, receiver's phone number, location of the caller, location of the receiver
 class Customer:
     'Common base class for all customer'
     customer_count = 0
