@@ -1,3 +1,9 @@
+Billing engine/Real time charging is one of the components of business support solutions (B.S.S)
+in telecom industry. Using big data ecosystem, our solution is capable of charging events coming
+from 4G (fourth generation) of telecom and is adaptive to handle multiple devices creating
+different event types in 5G (fifth generation). Our model considers only the mandatory fields
+relevant for charging. Other complex scenarios like call forwarding are exempted
+
 Environment variables:
 
 SPARK_HOME=D:\Softwares\Anaconda3\envs\billingEngine\Lib\site-packages\pyspark
